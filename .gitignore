@@ -1,0 +1,7 @@
+node_modules
+*.vts
+*.vtm
+*.vtl
+*.vtc
+conversions/fromJSON/*
+conversions/toJSON/*
