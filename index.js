@@ -40,6 +40,11 @@ let usage = clUsage([
                 name: 'help',
                 alias: 'h',
                 description: 'Prints this usage guide.'
+            },
+            {
+                name: 'version',
+                alias: 'v',
+                description: 'Prints the version of the VTOL VR JSON utility that you are using.'
             }
         ]
     }
