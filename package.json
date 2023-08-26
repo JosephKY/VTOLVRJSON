@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "run": "nodemon index.js",
-    "build": "pkg index.js --output VTOLVR-JSON-Utility"
+    "build": "pkg index.js"
   },
   "author": "Joseph Shackleford",
   "license": "ISC",
