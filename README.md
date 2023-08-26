@@ -1,4 +1,6 @@
-﻿# VTOLVR JSON Utility
+﻿<img src="assets/logo.png" alt="drawing" width="350"/>
+
+# VTOLVR JSON Utility
 The VTOL VR JSON Utility is a tool that you can use to convert VTOL VR files to and from JSON.
 
 The utility currently supports the following VTOL VR files:
