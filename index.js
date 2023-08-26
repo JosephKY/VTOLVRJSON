@@ -2,6 +2,8 @@ const fs = require("fs")
 const readline = require("readline")
 const clUsage = require("command-line-usage")
 
+let version = 1.1
+
 let usage = clUsage([
     {
         header: 'VTOL VR JSON Utility',
@@ -14,6 +16,8 @@ let usage = clUsage([
         - Campaigns (.VTC)\n
         - Maps (.VTM)\n
         - Liveries (.VTL)
+
+        Version ${version}
         `
     },
     {
@@ -56,6 +60,10 @@ let options = commandLineArgs([
     {
         name: "help",
         alias: 'h'
+    },
+    {
+        name: "version",
+        alias: 'v'
     }
 ]);
 
@@ -74,16 +82,6 @@ function waitForUserInput(func) {
     });
 }
 
-function pause(dur, func) {
-    if (!dur) {
-        waitForUserInput(func)
-    } else {
-        setTimeout(() => {
-            if (func) func()
-        }, dur)
-    }
-}
-
 function fancyOutput(output, mode, wait) {
     let modeCoor = {
         "error": "\x1B[41m ERROR \x1B[0m",
@@ -95,12 +93,8 @@ function fancyOutput(output, mode, wait) {
 
     console.log((`${prefix} ${output}`).trimStart())
 
-    if ((mode == "error") && wait) {
+    if ((mode == "error" || mode == "success") && wait) {
         waitForUserInput()
-    }
-
-    if(mode == "error" || mode == "success"){
-        console.log("\n")
     }
 }
 
@@ -172,10 +166,13 @@ if (mode == "gui") {
 
 if (mode == "commandline") {
 
-    console.log("\n")
-
     if(options.help === null || options.help){
         console.log(`${usage}\n`)
+        return
+    }
+
+    if(options.version === null || options.version){
+        console.log(`v${version}\n`)
         return
     }
 
@@ -183,7 +180,6 @@ if (mode == "commandline") {
         input: process.stdin,
         output: process.stdout
     });
-
 
     let inputOpt = options.input
     let outputOpt = options.output || '__AUTO__'
@@ -236,6 +232,7 @@ if (mode == "commandline") {
         return
     }
 
+    
     if (outputOpt == "__AUTO__") {
         if (inputOpt.endsWith(".json")) {
             outputOpt = "./conversions/fromJSON"
@@ -269,6 +266,7 @@ if (mode == "commandline") {
             }
         }
     }
+    
 
     let inputFileName = inputOpt.split(/[\\/]/);
     inputFileName = inputFileName[inputFileName.length - 1]
@@ -282,19 +280,21 @@ if (mode == "commandline") {
     if(mode == "fromJSON"){
         outputFinal = outputFinal.substring(0, outputFinal.lastIndexOf("."))
     }
+    
 
     switch (mode) {
         case "toJSON":
-            interp.toJSON(inputOpt, (json) => {
+            interp.toJSON(inputOpt, async (json) => {
+                
                 const jsonData = JSON.stringify(json, null, 2);
-
                 fs.writeFile(`${outputFinal}`, jsonData, (err) => {
                     if (err) {
-                        fancyOutput(`Error writing JSON file\nat: ${outputFinal}`, "error");
+                        fancyOutput(`Error writing JSON file\nat: ${outputFinal}`, "error", true);
                         console.log(err)
+                        rl.close()
                         return;
                     }
-                    fancyOutput(`Converted ${inputOpt} to JSON succesfully\nat: ${outputFinal}`, "success")
+                    fancyOutput(`Converted ${inputOpt} to JSON succesfully\nat: ${outputFinal}`, "success", true)
                 });
             });
             break;
@@ -303,11 +303,12 @@ if (mode == "commandline") {
                 outputFinal = `${outputFinal}.${vtol.type}`
                 fs.writeFile(outputFinal, vtol.data, (err) => {
                     if (err) {
-                        fancyOutput(`Error writing VTOL ${vtol.type} file\nat: ${outputFinal}`, "error");
+                        fancyOutput(`Error writing VTOL ${vtol.type} file\nat: ${outputFinal}`, "error", true);
                         console.log(err)
+                        rl.close()
                         return;
                     }
-                    fancyOutput(`Converted ${inputOpt} to VTOL ${vtol.type} succesfully\nat: ${outputFinal}`, "success")
+                    fancyOutput(`Converted ${inputOpt} to VTOL ${vtol.type} succesfully\nat: ${outputFinal}`, "success", true)
                 });
             });
             break;
@@ -317,6 +318,6 @@ if (mode == "commandline") {
 
     
 
-    rl.close()
+    
 }
 

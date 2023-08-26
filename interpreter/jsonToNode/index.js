@@ -41,31 +41,32 @@ function main(json){
     }
     
     function insertVal(key, val){
-        newLine()
+        newLine();
+        let final = "";
         if(Array.isArray(val)){
-            val = arrConvert(val)
+            val.forEach(arrVal=>{
+                final = `${final}${convertVal(arrVal)};`
+            })
+        } else {
+            final = convertVal(val)
         }
-        if(val === false){
-            val = "False"
-        }
-        if(val === true){
-            val = "True"
-        }
-        val = String(val)
         
-        converted = `${converted}${key} = ${val}`
+        converted = `${converted}${key} = ${final}`
     }
 
-    function arrConvert(arr){
-        let conv = "("
-        arr.forEach(val=>{
-            if(conv == "("){
-                conv = `(${val}`
-                return
-            }
-            conv = `${conv}, ${val}`
-        })
-        return `${conv})`
+    function convertVal(val){
+        let v3Conv = vector3ToText(val)
+        if(v3Conv !== false)return v3Conv
+
+        if(val === false)return "False"
+        if(val === true)return "True"
+
+        return String(val)
+    }
+
+    function vector3ToText(val){
+        if(typeof(val) != 'object' || !val.x || !val.y || !val.z)return false
+        return `(${val.x}, ${val.y}, ${val.z})`;
     }
 
     function applyDefaults(object, className){

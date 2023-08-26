@@ -2,9 +2,13 @@ let nodeToJson = require("./nodeToJson")
 let jsonToNode = require("./jsonToNode")
 let fs = require("fs")
 
-function toJSON(path, completed){
+function toJSON(path, callback){
     try {
-        return nodeToJson(fs.createReadStream(path), completed)
+        let converted = nodeToJson(fs.readFileSync(path, 'utf-8'))
+        if(callback){
+            callback(converted)
+        }
+        return converted
     } catch(err){
         console.error(err)
     }

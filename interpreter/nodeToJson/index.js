@@ -1,6 +1,3 @@
-const readline = require("readline")
-const dot = require("dot-object")
-
 function convertString(str) {
     if(!str){
         return undefined
@@ -17,11 +14,17 @@ function convertString(str) {
 
     if(str.includes(",") && str.startsWith("(") && str.endsWith(")")){
         let split = (str.slice(1, -1)).split(",")
-        let vals = []
-        split.forEach(val=>{
-            vals.push(parseFloat(val))
-        })
-        return vals
+        if(split.length == 3){
+            let splitParsed = [];
+            split.forEach(spl=>{
+                splitParsed.push(parseFloat(spl))
+            })
+            return {
+                x: splitParsed[0],
+                y: splitParsed[1],
+                z: splitParsed[2]
+            }
+        }
     }
 
     const floatVal = parseFloat(str);
@@ -39,13 +42,7 @@ function convertString(str) {
     return str;
 }
 
-function main(stream, completed) {
-    let rl = readline.createInterface({
-        input: stream,
-        terminal: false,
-        crlfDelay: Infinity
-    })
-
+function main(data) {
     let converted = {}
     let cur = ""
     let mode = {
@@ -60,7 +57,20 @@ function main(stream, completed) {
         if (!cur) {
             return converted;
         }
-        return dot.pick(cur, converted)
+
+        const pathArray = cur.split('.');
+        let value = converted;
+  
+        for (const key of pathArray) {
+        if (value && typeof value === 'object' && key in value) {
+            value = value[key];
+        } else {
+            value = undefined;
+            break;
+        }
+        }
+  
+        return value;
     }
 
     function addCur(part) {
@@ -83,7 +93,7 @@ function main(stream, completed) {
         }
     }
 
-    rl.on('line', line => {
+    for(let line of data.split("\n")){
         if(!line){
             return
         }
@@ -101,12 +111,10 @@ function main(stream, completed) {
             }
 
             if (cur["_parent"] == "__GAME__") {
-                rl.close()
-                return
+                break;
             }
 
             delCur()
-            //cur = cur["_parent"] // FIX
         }
 
         if (line.includes("=")) {
@@ -116,15 +124,24 @@ function main(stream, completed) {
 
             let split = line.split("=")
             let key = split[0].trim()
-            let val = convertString(split[1].trim())
-
-            if(key == "seed" && cur == "_class_VTMapCustom_0"){
-                val = split[1].trim()
+            let vals = []
+            let valsFinal = []
+            split[1].trim().split(";").forEach(val=>{
+                vals.push(convertString(val))
+            })
+            vals.forEach(val=>{
+                if(val === undefined)return;
+                valsFinal.push(val)
+            })
+            if(valsFinal.length == 1){
+                valsFinal = valsFinal[0]
             }
 
-            //console.log(getCur())
-            getCur()[key] = val
-            //cur[key] = val // FIX
+            if(key == "seed" && cur == "_class_VTMapCustom_0"){
+                valsFinal = split[1].trim()
+            }
+
+            getCur()[key] = valsFinal
         }
 
         if (!line.includes("=") && !line.includes("}") && !line.includes("{")) {
@@ -143,22 +160,11 @@ function main(stream, completed) {
             }
             let classAmount = classRecord[className]++
             let format = `_class_${className}_${classAmount}`
-            //let parent = cur
 
-            //console.log(`NEW CLASS: ${className}`)
-
-            // FIX
-            //cur[format] = {}
-            //cur = cur[format]
-            ////cur["_parent"] = parent
             getCur()[format] = {}
             addCur(format)
         }
-    })
-
-    rl.on('close', () => {
-        completed(converted)
-    })
+    }
     
     return converted
 }
