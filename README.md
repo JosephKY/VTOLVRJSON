@@ -38,6 +38,6 @@ A: There are a few options if you discover a bug. You can [submit an issue](http
 
 Q: What if I have an idea that would make the utility better?
 
-A: Please [submit an issue](https://github.com/JosephKY/VTOLVRJSON/issues), just be sure to choose the "enhancement" for the Labels option. Feedback and suggestions are always appreciated, so if you have something to say, please let me know!
+A: Please [submit an issue](https://github.com/JosephKY/VTOLVRJSON/issues), just be sure to choose "enhancement" for the Labels option. Feedback and suggestions are always appreciated, so if you have something to say, please let me know!
 
 
