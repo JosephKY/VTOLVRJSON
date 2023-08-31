@@ -1,5 +1,5 @@
 var $e2xbx$fs = require("fs");
-
+var foo = "test";
 var $38536c0f7bfe5de3$exports = {};
 function $38536c0f7bfe5de3$var$convertString(str) {
     if (!str) return undefined;
