@@ -102,7 +102,7 @@ confirmDir("conversions")
 confirmDir("conversions/toJSON")
 confirmDir("conversions/fromJSON")
 
-let interp = require("./interpreter")
+let interp = require("./interpreter").default;
 
 if (mode == "gui") {
     const nodegui = require("@nodegui/nodegui")
@@ -280,11 +280,10 @@ if (mode == "commandline") {
     if(mode == "fromJSON"){
         outputFinal = outputFinal.substring(0, outputFinal.lastIndexOf("."))
     }
-    
 
     switch (mode) {
         case "toJSON":
-            interp.toJSON(inputOpt, async (json) => {
+            interp.toJSON(nodeToJson(fs.readFileSync(inputOpt, 'utf-8')), async (json) => {
                 
                 const jsonData = JSON.stringify(json, null, 2);
                 fs.writeFile(`${outputFinal}`, jsonData, (err) => {
@@ -301,7 +300,7 @@ if (mode == "commandline") {
         case "fromJSON":
             interp.fromJSON(inputOpt, (vtol) => {
                 outputFinal = `${outputFinal}.${vtol.type}`
-                fs.writeFile(outputFinal, vtol.data, (err) => {
+                fs.writeFile(JSON.parse(fs.readFileSync(outputFinal)), vtol.data, (err) => {
                     if (err) {
                         fancyOutput(`Error writing VTOL ${vtol.type} file\nat: ${outputFinal}`, "error", true);
                         console.log(err)

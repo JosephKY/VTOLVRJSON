@@ -1,10 +1,9 @@
 let nodeToJson = require("./nodeToJson")
 let jsonToNode = require("./jsonToNode")
-let fs = require("fs")
 
-function toJSON(path, callback){
+function toJSON(strNodeData, callback){
     try {
-        let converted = nodeToJson(fs.readFileSync(path, 'utf-8'))
+        let converted = nodeToJson(strNodeData)
         if(callback){
             callback(converted)
         }
@@ -14,14 +13,17 @@ function toJSON(path, callback){
     }
 }
 
-function fromJSON(path, completed){
+function fromJSON(objJSONData, callback){
     try {
-        let json = fs.readFileSync(path)
-        json = JSON.parse(json)
-        completed(jsonToNode(json)) 
+        let converted = jsonToNode(objJSONData)
+        if(callback){
+            callback(converted)
+        }
+        return converted
     } catch(err){
         console.error(err)
     }
 }
 
-module.exports = { toJSON, fromJSON }
+let VTOLVRJSONUtility = { toJSON, fromJSON };
+export default VTOLVRJSONUtility;

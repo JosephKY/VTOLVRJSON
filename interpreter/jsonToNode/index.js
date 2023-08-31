@@ -58,15 +58,24 @@ function main(json){
         let v3Conv = vector3ToText(val)
         if(v3Conv !== false)return v3Conv
 
+        let v2Conv = vector2ToText(val)
+        if(v2Conv !== false)return v2Conv
+
         if(val === false)return "False"
         if(val === true)return "True"
+        if(val === undefined)return "";
 
         return String(val)
     }
 
     function vector3ToText(val){
-        if(typeof(val) != 'object' || !val.x || !val.y || !val.z)return false
+        if(typeof(val) != 'object' || val.x === undefined || val.y === undefined || val.z === undefined)return false
         return `(${val.x}, ${val.y}, ${val.z})`;
+    }
+
+    function vector2ToText(val){
+        if(typeof(val) != 'object' || val.x === undefined || val.y === undefined)return false
+        return `(${val.x}, ${val.y})`;
     }
 
     function applyDefaults(object, className){

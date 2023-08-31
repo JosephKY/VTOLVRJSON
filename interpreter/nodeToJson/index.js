@@ -14,8 +14,17 @@ function convertString(str) {
 
     if(str.includes(",") && str.startsWith("(") && str.endsWith(")")){
         let split = (str.slice(1, -1)).split(",")
+        let splitParsed = [];
+        if(split.length == 2){
+            split.forEach(spl=>{
+                splitParsed.push(parseFloat(spl))
+            })
+            return {
+                x: splitParsed[0],
+                y: splitParsed[1]
+            }
+        }
         if(split.length == 3){
-            let splitParsed = [];
             split.forEach(spl=>{
                 splitParsed.push(parseFloat(spl))
             })
@@ -135,6 +144,9 @@ function main(data) {
             })
             if(valsFinal.length == 1){
                 valsFinal = valsFinal[0]
+            }
+            if(valsFinal.length == 0){
+                valsFinal = undefined;
             }
 
             if(key == "seed" && cur == "_class_VTMapCustom_0"){
