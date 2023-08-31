@@ -7,12 +7,14 @@
     "run": "nodemon index.js",
     "build": "pkg index.js",
     "web": "browserify interpreter/index.js -o bundle.js",
-    "webCompress": "uglifyjs bundle.js"
+    "webCompress": "uglifyjs index.js",
+    "webpack": "webpack ./index.js"
   },
   "author": "Joseph Shackleford",
   "license": "ISC",
-  "dependencies": {},
   "devDependencies": {
-    "uglify-js": "^3.17.4"
+    "uglify-js": "^3.17.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
