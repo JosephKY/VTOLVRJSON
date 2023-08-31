@@ -1,4 +1,4 @@
-﻿<img src="assets/logo.png" alt="drawing" width="350"/>
+﻿﻿<img src="assets/logo.png" alt="drawing" width="350"/>
 
 # VTOLVR JSON Utility
 The VTOL VR JSON Utility is a tool that you can use to convert VTOL VR files to and from JSON.
@@ -28,6 +28,33 @@ The utility can be imported into HTML with script tags:
 <script src="https://josephky.github.io/VTOLVRJSON/bundle.js"></script>
 ```
 The module will be stored in the global variable `VTOLVRJSONUtility`
+
+# Utility Module Documentation
+
+## `VTOLVRJSONUtility: object`
+The utility module itself
+
+### Methods
+
+### `fromJSON()`
+#### Parameters
+`jsonData: object` The JSON data you want to convert back into VTOL VR compatible data
+
+`callback: function [optional]` A callback function which will be called with the converted object in the first parameter
+
+#### Yields
+`converted: object` Data for the conversion
+- `data: string` The VTOL VR compatible data
+- `type: string` The auto-detected VTOL VR file type (vtm/vtl/vtc/vts)
+<br>
+  
+### `toJSON()`
+#### Parameters
+`vtolvrData: string` The VTOL VR data you want to convert into JSON
+
+`callback: function [optional]` A callback function which will be called with the converted JSON data in the first parameter
+#### Yields
+`json: object` The JSON-converted VTOL VR data
 
 # FAQ
 Q: When converting from JSON to a VTOL file, do I need to specify what kind of file (campaign, scenario, livery, map) it is?
