@@ -26,4 +26,4 @@ function fromJSON(objJSONData, callback){
 }
 
 let VTOLVRJSONUtility = { toJSON, fromJSON };
-export default VTOLVRJSONUtility;
+module.exports = VTOLVRJSONUtility

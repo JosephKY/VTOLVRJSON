@@ -1,8 +1,9 @@
 const fs = require("fs")
 const readline = require("readline")
 const clUsage = require("command-line-usage")
+const packageInfo = require("./package.json")
 
-let version = 1.1
+let version = packageInfo.version;
 
 let usage = clUsage([
     {
@@ -102,7 +103,7 @@ confirmDir("conversions")
 confirmDir("conversions/toJSON")
 confirmDir("conversions/fromJSON")
 
-let interp = require("./interpreter").default;
+let interp = require("./interpreter");
 
 if (mode == "gui") {
     const nodegui = require("@nodegui/nodegui")
