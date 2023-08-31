@@ -22,8 +22,12 @@ You don't need to specify an output. The converted file with automatically be sa
 ## GUI
 WIP. Check back later
 
-## Web CDN
-WIP. Check back later
+## Web
+The utility can be imported into HTML with script tags:
+```html
+<script src="https://josephky.github.io/VTOLVRJSON/bundle.js"></script>
+```
+The module will be stored in the global variable `VTOLVRJSONUtility`
 
 # FAQ
 Q: When converting from JSON to a VTOL file, do I need to specify what kind of file (campaign, scenario, livery, map) it is?
