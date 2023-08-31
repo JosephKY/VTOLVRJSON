@@ -8,7 +8,7 @@
     "build": "pkg index.js",
     "web": "browserify interpreter/index.js -o bundle.js",
     "webCompress": "uglifyjs index.js",
-    "webpack": "webpack ./index.js"
+    "webpack": "webpack --config webpack.config.js"
   },
   "author": "Joseph Shackleford",
   "license": "ISC",

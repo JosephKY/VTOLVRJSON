@@ -25,4 +25,5 @@ function fromJSON(objJSON, callback){
     }
 }
 
-module.exports = { toJSON, fromJSON }
+let lib = { toJSON, fromJSON };
+export default lib;
