@@ -7,4 +7,3 @@ conversions/fromJSON/*
 conversions/toJSON/*
 .parcel-cache
 bundle.min.js
-*.html
